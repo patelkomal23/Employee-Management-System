@@ -1,35 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SignUpPage from "./Pages/SignUpPage";
+import LoginPage from "./Pages/LoginPage";
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import EmployeeDashboard from "./Pages/EmployeeDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import EmployeeManagement from "./Pages/EmployeeManagement";
+import TaskManagement from "./Pages/Admin/TaskManagement";
+import PayrollPage from "./Pages/Admin/PayrollPage";
+import EmployeeProfile from "./Pages/EmployeeProfile";
+import EmployeePayrollPage from "./Pages/EmployeePayrollPage";
 
-function App() {
-  const [count, setCount] = useState(0)
 
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Router>
+      <Routes>
+        <Route path="/" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/employee/payroll" element={<EmployeePayrollPage />} />
+        
 
-export default App
+
+     
+        <Route
+          path="/employee/dashboard"
+          element={
+            <ProtectedRoute role="employee">
+              <EmployeeDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/payroll"
+          element={
+            <ProtectedRoute role="admin">
+              <PayrollPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/employees"
+          element={
+            <ProtectedRoute role="admin">
+              <EmployeeManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/tasks"
+          element={
+            <ProtectedRoute role="admin">
+              <TaskManagement />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/employee/profile"
+          element={
+            <ProtectedRoute role="employee">
+              <EmployeeProfile />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
+  );
+};
+
+export default App;
